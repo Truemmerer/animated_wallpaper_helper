@@ -6,8 +6,8 @@ mkdir -p $Bilddir
 cd $Download
 
 INPUT=$(zenity --list --title "Animated Wallpaper Helper" --text "What do you want?"\
- --column "Selection" --column "Typ" --radiolist  TRUE "Existing" FALSE "Start Animated Wallpapers" FALSE "New"\
- --width=600 --height=200)
+ --column "Selection" --column "Typ" --radiolist  TRUE "Existing" FALSE "New" FALSE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers"\
+ --width=600 --height=250)
 
 
 #Existierendes Wallpaper
@@ -40,6 +40,13 @@ read lastpic < $HOME/Animated_Wallpapers/lastpicture.txt
 
 gsettings set org.gnome.desktop.background picture-uri file://$lastpic\
 && animated-wallpaper $lastvid & exit 0
+
+fi
+
+if [ "$INPUT" == "Stop Animated Wallpapers" ]
+then
+
+killall animated-wallpaper && exit 0
 
 fi
 

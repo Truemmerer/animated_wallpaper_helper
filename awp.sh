@@ -56,7 +56,7 @@ then
 LINK=$(zenity --entry --title "Insert link" --text "Link to the video" --width=600)
 NAME=$(zenity --entry --title "What should the wallpaper be called?" --text "Without file suffix" --width=600)
 
-youtube-dl --restrict-filenames $LINK -o $NAME -f mkv\
+youtube-dl --restrict-filenames $LINK -o $NAME\
  | zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
 ffmpeg -i $NAME.mkv -frames:v 1 ./Bild/$NAME.png
 

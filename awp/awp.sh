@@ -58,12 +58,12 @@ NAME=$(zenity --entry --title "What should the wallpaper be called?" --text "Wit
 
 youtube-dl --restrict-filenames $LINK -o $NAME\
  | zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
-ffmpeg -i $NAME.mkv -frames:v 1 ./Bild/$NAME.png
+ffmpeg -i $NAME.* -frames:v 1 ./Bild/$NAME.png
 
 killall animated-wallpaper
 
 gsettings set org.gnome.desktop.background picture-uri file://$Bilddir/$NAME.png\
- && animated-wallpaper $NAME.mkv  & exit 0
+ && animated-wallpaper $NAME.*  & exit 0
 
 
 

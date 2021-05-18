@@ -1,4 +1,4 @@
-# Debian based systems only more Distros needs to be added
+# Debian RedHat based systems only more Distros needs to be added
 
 
 #!/bin/bash

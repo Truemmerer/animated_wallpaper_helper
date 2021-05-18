@@ -1,16 +1,13 @@
 <img src="./awp/awp_wallpaper_icon.png" width="150" height="150">
 
-# Requires
+# Requires (shipped by awp_install_script.sh)
 1. youtube-dl
 2. animated-wallpaper
 <https://github.com/Ninlives/animated-wallpaper>
 
 # Installation
-1. Move the folder "awp" to /usr/local/share/
-2. Move the ".desktop" file to /usr/share/applications/
-3. chmod +x /usr/local/share/awp/awp.sh
-4. chmod +x /usr/local/share/awp/awp_autostart.sh
-5. Reload GNOME - X11 press f2 and then r
+1. chmod +x awp_install_script.sh
+2. ./awp_install_script.sh
 
 ## Icon from:
 https://icon-icons.com/icon/wallpaper/104166

@@ -1,5 +1,5 @@
-# Debian RedHat based systems only more Distros needs to be added
-
+# Arch, Debian, RedHat based systems only more Distros needs to be added
+## Arch is not implemented atm
 
 #!/bin/bash
 

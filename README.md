@@ -1,8 +1,11 @@
 <img src="./awp/awp_wallpaper_icon.png" width="150" height="150">
 
+# Animated Wallpaper Helper for GNOME
+
 # Requires
-1. youtube-dl
-2. animated-wallpaper
+1. GNOME
+2. youtube-dl
+3. animated-wallpaper
 <https://github.com/Ninlives/animated-wallpaper>
 
 # Installation

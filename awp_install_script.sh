@@ -26,8 +26,11 @@ fi
             # Fedora
             echo Install Fedora Dependencies
             dnf install -y cmake vala pkgconfig gtk3-devel clutter-devel clutter-gtk clutter-gst3-devel youtube-dl
+        elif [ "$OS" == "Debian" ]; then
+            # Debian
+            echo Install Debian Dependencies
+            apt install -y build-essential vala pkgconfig gtk3-devel clutter-devel clutter-gtk clutter-gst3-devel youtube-dl
         fi
-
 
 # Clone and Install animated-wallpaper
 echo 'Clone animated-wallpaper from github. (https://github.com/Ninlives/animated-wallpaper)'

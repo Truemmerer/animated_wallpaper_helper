@@ -8,8 +8,8 @@
 # Installation
 ## Automatic installation
 **This will install the dependencies directly with and move the files to the correct places.**
-1. chmod +x awp_install_script.sh
-2. ./awp_install_script.sh
+1. chmod +x install.sh
+2. ./install.sh
 
 ## Manual Installation
 1. Move the folder "awp" to /usr/local/share/

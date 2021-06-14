@@ -6,7 +6,7 @@ mkdir -p $Bilddir
 cd $Download
 
 INPUT=$(zenity --list --title "Animated Wallpaper Helper" --text "What do you want?"\
- --column "Selection" --column "Typ" --radiolist  TRUE "Existing" FALSE "New" FALSE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers"\
+ --column "Selection" --column "Typ" --radiolist  FALSE "Existing" FALSE "New" TRUE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers" FALSE "Enable Autostart" FALSE "Disable Autostart"\
  --width=600 --height=250)
 
 
@@ -65,7 +65,16 @@ killall animated-wallpaper
 gsettings set org.gnome.desktop.background picture-uri file://$Bilddir/$NAME.png\
  && animated-wallpaper $NAME.*  & exit 0
 
+fi
 
+if [ "$INPUT" == "Enable Autostart" ]
+then
+
+ 
 
 fi
 
+if [ "$INPUT" == "Disable Autostart" ]
+then
+
+fi

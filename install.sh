@@ -44,9 +44,9 @@ rm -rf animated-wallpaper
 # Clone and Install animated_wallpaper_helper
 
 cp -r awp /usr/local/share/
-cp animated-wallpaper.desktop /usr/share/applications/
+cp awp.desktop /usr/share/applications/
 chmod +x /usr/local/share/awp/awp.sh
-chmod +x /usr/local/share/awp/awp_autostart.sh
+chmod +x /usr/local/share/awp/awp-autostart.sh
 
 fi
 

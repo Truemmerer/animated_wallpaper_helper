@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Animated Wallpaper
-Name[de]=Animierte Hintergrundbilder
-Comment[de]=Verwaltung von animierten Hintergrundbildern
-Comment=Control of animated Wallpaper
+Name=Animated Wallpaper Autostart
+Name[de]=Animierte Hintergrundbilder Autostart
+Comment[de]=Verwaltung von animierten Hintergrundbildern - Autostart
+Comment=Control of animated Wallpaper - Autostart
 Keywords[de]=Hintergrund;Animation;Wallpaper;
 Keywords=Animation;Wallpaper;GTK;Background;
 OnlyShowIn=GNOME;Unity;

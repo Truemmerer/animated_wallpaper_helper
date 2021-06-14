@@ -24,11 +24,29 @@ fi
 # Install Dependencies
                 if [ "$OS" == "Fedora" ]; then
                         # Fedora
-                        echo Install Fedora Dependencies
-                        echo Add rpmfusion repository for ffmpeg
-                        dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm 
-                        echo Install dev tools and dependencies
-                        dnf install -y cmake gcc-c++ vala pkgconfig gtk3-devel clutter-devel clutter-gtk-devel clutter-gst3-devel youtube-dl ffmpeg
+
+                        zenity --question --width 500\
+                            --text="Installation for Fedora initiated. It needs to intigrate the rpmfusion repository for ffmpeg. Do you agree with this?"
+
+                        case $? in 
+                        0) 
+                            echo Install Fedora Dependencies
+                            echo Add rpmfusion repository for ffmpeg
+                            dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm 
+                            echo Install dev tools and dependencies
+                            dnf install -y cmake gcc-c++ vala pkgconfig gtk3-devel clutter-devel clutter-gtk-devel clutter-gst3-devel youtube-dl ffmpeg
+                            ;;
+                        1) 
+                            zenity --info --width 500\
+                              --text="Unfortunately, it is not possible for me to work like this."
+                            exit 0
+                            ;;
+                        -1)
+                            zenity --info --width 500\
+                              --text="Oops. This should not happen."
+                            exit 0
+                            ;;
+                        esac
                 fi
 
 

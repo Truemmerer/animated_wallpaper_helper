@@ -17,12 +17,47 @@ then
 
 Video=$(zenity --file-selection --title "Choose the live wallpaper" --filename='$Download' --width=600 --file-filter=""*.mkv" "*.webm"")
 
-echo $Video > lastvideo.txt 
-cd Bild
-Bild=$(zenity --file-selection --title "Select the corresponding still image" --filename='$Bilddir' --width=600 --file-filter=""*.png" "*.jpg" "*.jpeg"") 
+case $? in 
+
+0) 
+    echo "select Video"
+    ;;
+1) 
+    echo "Aborted"
+    exit 0
+    ;;
+-1) 
+    zenity --info --width 500\
+        --text="Oops. This should not happen."
+    exit 0
+    ;;
+    
+esac
+
+    cd $Bilddir
+    Bild=$(zenity --file-selection --title "Select the corresponding still image" --filename='$Bilddir' --width=600 --file-filter=""*.png" "*.jpg" "*.jpeg"") 
+
+    case $? in 
+
+    0)
+        echo "select Picture"
+        ;;
+
+    1) 
+        echo "Aborted"
+        exit 0
+        ;;
+    -1) 
+        zenity --info --width 500\
+            --text="Oops. This should not happen."
+        exit 0
+        ;;    
+
+    esac
+
 cd ..
 echo $Bild > lastpicture.txt
-
+echo $Video > lastvideo.txt 
 killall animated-wallpaper
 
 gsettings set org.gnome.desktop.background picture-uri file://$Bild\
@@ -70,11 +105,15 @@ fi
 if [ "$INPUT" == "Enable Autostart" ]
 then
 
- 
+cp /usr/local/share/awp/awp-autostart.desktop $HOME/.config/autostart/
+sh /usr/local/share/awp/awp.sh
 
 fi
 
 if [ "$INPUT" == "Disable Autostart" ]
 then
+
+rm -f $HOME/.config/autostart/awp-autostart.desktop
+sh /usr/local/share/awp/awp.sh
 
 fi

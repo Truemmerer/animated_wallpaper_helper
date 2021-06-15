@@ -20,7 +20,8 @@
 4. chmod +x /usr/local/share/awp/awp_autostart.sh
 5. Reload GNOME - X11 press f2 and then r
 
-
+# Notice:
+The X11 version of GNOME is recommended for this, as this will only work on a Wayland workspace.
 
 ## Icon from:
 https://icon-icons.com/icon/wallpaper/104166

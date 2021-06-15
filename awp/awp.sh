@@ -5,7 +5,7 @@ Bilddir="$HOME/Animated_Wallpapers/Bild"
 mkdir -p $Bilddir
 cd $Download
 
-INPUT=$(zenity --list --title "Animated Wallpaper Helper" --text "What do you want?"\
+INPUT=$(zenity --list --title "Animated Wallpaper Helper" --window-icon=/usr/local/share/awp/awp_wallpaper_icon.png --text "What do you want?"\
  --column "Selection" --column "Typ" --radiolist  FALSE "Existing" FALSE "New" TRUE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers" FALSE "Enable Autostart" FALSE "Disable Autostart"\
  --width=600 --height=250)
 

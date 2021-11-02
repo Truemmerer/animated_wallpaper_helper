@@ -34,7 +34,7 @@ fi
                             echo Add rpmfusion repository for ffmpeg
                             dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm 
                             echo Install dev tools and dependencies
-                            dnf install -y cmake gcc-c++ vala pkgconfig gtk3-devel clutter-devel clutter-gtk-devel clutter-gst3-devel youtube-dl ffmpeg
+                            dnf install -y cmake gcc-c++ vala pkgconfig gtk3-devel clutter-devel clutter-gtk-devel clutter-gst3-devel youtube-dl ffmpeg && STATUS="OK"
                             ;;
                         1) 
                             zenity --info --width 500\
@@ -54,8 +54,10 @@ fi
                             --text="Installation for Manjaro initiated. Is tis correct?"
                     case $? in 
                         0)  
-                            echo Install Manjaro Dependencies       
-			                pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm
+                            echo Renew Package Database
+                            pacman -Sy
+                            echo Install Manjaro Dependencies  
+			                pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
                             ;;
                         1) 
                             zenity --info --width 500\
@@ -68,14 +70,16 @@ fi
                             exit 0
                             ;;
                         esac
-                elif [[ "$OS" == "arch" ]]; then
+                elif [[ "$OS" == "Arch Linux" ]]; then
 			        # Arch
                     zenity --question --width 500\
                             --text="Installation for Arch Linux initiated. Is tis correct?"
                     case $? in 
                         0)  
+                            echo Renew Package Database
+                            pacman -Sy
                             echo Install Arch Linux Dependencies       
-			                pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm
+			                pacman -S git base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
                             ;;
                         1) 
                             zenity --info --width 500\
@@ -93,22 +97,26 @@ fi
                 fi
 
 
+    if [ "$STATUS" == "OK" ]; then
+        # Clone and Install animated-wallpaper
+        echo 'Clone animated-wallpaper from github. (https://github.com/Ninlives/animated-wallpaper)'
 
-# Clone and Install animated-wallpaper
-echo 'Clone animated-wallpaper from github. (https://github.com/Ninlives/animated-wallpaper)'
+        git clone https://github.com/Ninlives/animated-wallpaper
+        cd animated-wallpaper
+        cmake . && make && make install
+        cd ..
+        rm -rf animated-wallpaper
 
-git clone https://github.com/Ninlives/animated-wallpaper
-cd animated-wallpaper
-cmake . && make && make install
-cd ..
-rm -rf animated-wallpaper
+        # Clone and Install animated_wallpaper_helper
 
-# Clone and Install animated_wallpaper_helper
+        cp -r awp /usr/local/share/
+        cp awp.desktop /usr/share/applications/
+        chmod +x /usr/local/share/awp/awp.sh
+        chmod +x /usr/local/share/awp/awp-autostart.sh
+    
+    else
+        echo "Sry but the Installer does not work for your system!"
 
-cp -r awp /usr/local/share/
-cp awp.desktop /usr/share/applications/
-chmod +x /usr/local/share/awp/awp.sh
-chmod +x /usr/local/share/awp/awp-autostart.sh
-
+    fi
 fi
 

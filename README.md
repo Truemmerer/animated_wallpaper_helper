@@ -9,7 +9,7 @@
 # Installation
 ## Automatic installation
 **This will install the dependencies directly with and move the files to the correct places.**
-**! Only for Fedora !**
+**Fedora, Manjaro and Arch supported**
 1. chmod +x awp_install_script.sh
 2. ./awp_install_script.sh
 

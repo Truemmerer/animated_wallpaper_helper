@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Animated Wallpaper Autostart
+Name[de]=Animierte Hintergrundbilder Autostart
+Comment[de]=Verwaltung von animierten Hintergrundbildern - Autostart
+Comment=Control of animated Wallpaper - Autostart
+Keywords[de]=Hintergrund;Animation;Wallpaper;
+Keywords=Animation;Wallpaper;GTK;Background;
+OnlyShowIn=GNOME;Unity;
+Exec=/usr/local/share/awp/awp-autostart.sh
+Icon=/usr/local/share/awp/awp_wallpaper_icon.png
+StartupNotify=false
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;Core;Utility;Graphics;

@@ -47,6 +47,49 @@ fi
                             exit 0
                             ;;
                         esac
+                
+                elif [[ "$os" == "manjaro" ]]; then
+			        # Manjaro
+                    zenity --question --width 500\
+                            --text="Installation for Manjaro initiated. Is tis correct?"
+                    case $? in 
+                        0)  
+                            echo Install Manjaro Dependencies       
+			                pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm
+                            ;;
+                        1) 
+                            zenity --info --width 500\
+                              --text="Unfortunately, it is not possible for me to work like this."
+                            exit 0
+                            ;;
+                        -1)
+                            zenity --info --width 500\
+                              --text="Oops. This should not happen."
+                            exit 0
+                            ;;
+                        esac
+                elif [[ "$os" == "arch" ]]; then
+			        # Arch
+                    zenity --question --width 500\
+                            --text="Installation for Arch Linux initiated. Is tis correct?"
+                    case $? in 
+                        0)  
+                            echo Install Arch Linux Dependencies       
+			                pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm
+                            ;;
+                        1) 
+                            zenity --info --width 500\
+                              --text="Unfortunately, it is not possible for me to work like this."
+                            exit 0
+                            ;;
+                        -1)
+                            zenity --info --width 500\
+                              --text="Oops. This should not happen."
+                            exit 0
+                            ;;
+                        esac
+                else
+			            echo "This OS is not Supported!"        
                 fi
 
 

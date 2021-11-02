@@ -22,7 +22,7 @@ else
 fi
 
 # Install Dependencies
-                if [ "$OS" == "Fedora" ]; then
+                if [ "$OS" == "Fedora Linux" ]; then
                         # Fedora
 
                         zenity --question --width 500\
@@ -48,7 +48,7 @@ fi
                             ;;
                         esac
                 
-                elif [[ "$os" == "manjaro" ]]; then
+                elif [[ "$OS" == "Manjaro Linux" ]]; then
 			        # Manjaro
                     zenity --question --width 500\
                             --text="Installation for Manjaro initiated. Is tis correct?"
@@ -68,7 +68,7 @@ fi
                             exit 0
                             ;;
                         esac
-                elif [[ "$os" == "arch" ]]; then
+                elif [[ "$OS" == "arch" ]]; then
 			        # Arch
                     zenity --question --width 500\
                             --text="Installation for Arch Linux initiated. Is tis correct?"
@@ -91,6 +91,7 @@ fi
                 else
 			            echo "This OS is not Supported!"        
                 fi
+
 
 
 # Clone and Install animated-wallpaper

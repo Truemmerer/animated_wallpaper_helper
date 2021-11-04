@@ -101,7 +101,7 @@ fi
                             echo Renew Package Database
                             apt-get update
                             echo Install Ubuntu Dependencies       
-                            apt-get install ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-devlibclutter-gst-3.0-dev 
+                            apt-get install ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev 
                             ;;
                         1) 
                             zenity --info --width 500\

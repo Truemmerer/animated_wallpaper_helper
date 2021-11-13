@@ -93,7 +93,7 @@ fi
                             ;;
                         esac
                 elif [[ "$OS" == "Ubuntu" ]]; then
-			        # Arch
+			        # Ubuntu
                     zenity --question --width 500\
                             --text="Installation for Ubuntu initiated. Is tis correct?"
                     case $? in 
@@ -101,7 +101,7 @@ fi
                             echo Renew Package Database
                             apt-get update
                             echo Install Ubuntu Dependencies       
-                            apt-get install ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev 
+                            apt-get install git ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev 
                             ;;
                         1) 
                             zenity --info --width 500\

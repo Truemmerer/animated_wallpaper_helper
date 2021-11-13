@@ -92,6 +92,28 @@ fi
                             exit 0
                             ;;
                         esac
+                elif [[ "$OS" == "Ubuntu" ]]; then
+			        # Ubuntu
+                    zenity --question --width 500\
+                            --text="Installation for Ubuntu initiated. Is tis correct?"
+                    case $? in 
+                        0)  
+                            echo Renew Package Database
+                            apt-get update
+                            echo Install Ubuntu Dependencies       
+                            apt install git ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev build-essential --yes && STATUS="OK" 
+			    ;;
+                        1) 
+                            zenity --info --width 500\
+                              --text="Unfortunately, it is not possible for me to work like this."
+                            exit 0
+                            ;;
+                        -1)
+                            zenity --info --width 500\
+                              --text="Oops. This should not happen."
+                            exit 0
+                            ;;
+                        esac
                 else
 			            echo "This OS is not Supported!"        
                 fi

@@ -101,8 +101,8 @@ fi
                             echo Renew Package Database
                             apt-get update
                             echo Install Ubuntu Dependencies       
-                            apt-get install git ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev 
-                            ;;
+                            apt install git ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev build-essential --yes && STATUS="OK" 
+			    ;;
                         1) 
                             zenity --info --width 500\
                               --text="Unfortunately, it is not possible for me to work like this."

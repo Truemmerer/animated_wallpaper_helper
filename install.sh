@@ -26,14 +26,14 @@ fi
                         # Fedora
 
                         zenity --question --width 500\
-                            --text="Installation for Fedora initiated. It needs to intigrate the rpmfusion repository for ffmpeg. Do you agree with this?"
+                            --text="Fedora Detected. It needs to intigrate the rpmfusion repository for ffmpeg. Do you agree with this?"
 
                         case $? in 
                         0) 
-                            echo Install Fedora Dependencies
+                            echo Installing Fedora Dependencies
                             echo Add rpmfusion repository for ffmpeg
                             dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm 
-                            echo Install dev tools and dependencies
+                            echo Installing dev tools and dependencies
                             dnf install -y cmake gcc-c++ vala pkgconfig gtk3-devel clutter-devel clutter-gtk-devel clutter-gst3-devel youtube-dl ffmpeg && STATUS="OK"
                             ;;
                         1) 
@@ -43,7 +43,7 @@ fi
                             ;;
                         -1)
                             zenity --info --width 500\
-                              --text="Oops. This should not happen."
+                              --text="Oops. This should not have happened...."
                             exit 0
                             ;;
                         esac
@@ -51,12 +51,12 @@ fi
                 elif [[ "$OS" == "Manjaro Linux" ]]; then
 			        # Manjaro
                     zenity --question --width 500\
-                            --text="Installation for Manjaro initiated. Is tis correct?"
+                            --text="Manjaro Detected. Is this correct?"
                     case $? in 
                         0)  
-                            echo Renew Package Database
+                            echo Renewing Package Database
                             pacman -Sy
-                            echo Install Manjaro Dependencies  
+                            echo Installing Manjaro Dependencies  
 			                pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
                             ;;
                         1) 
@@ -66,19 +66,19 @@ fi
                             ;;
                         -1)
                             zenity --info --width 500\
-                              --text="Oops. This should not happen."
+                              --text="Oops. This should not have happened...."
                             exit 0
                             ;;
                         esac
                 elif [[ "$OS" == "Arch Linux" ]]; then
 			        # Arch
                     zenity --question --width 500\
-                            --text="Installation for Arch Linux initiated. Is tis correct?"
+                            --text="Arch Linux Detected. Is this correct?"
                     case $? in 
                         0)  
-                            echo Renew Package Database
+                            echo Renewing Package Database
                             pacman -Sy
-                            echo Install Arch Linux Dependencies       
+                            echo Installing Arch Linux Dependencies       
 			                pacman -S git base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
                             ;;
                         1) 
@@ -88,19 +88,19 @@ fi
                             ;;
                         -1)
                             zenity --info --width 500\
-                              --text="Oops. This should not happen."
+                              --text="Oops. This should not have happened..."
                             exit 0
                             ;;
                         esac
                 elif [[ "$OS" == "Ubuntu" ]]; then
 			        # Ubuntu
                     zenity --question --width 500\
-                            --text="Installation for Ubuntu initiated. Is tis correct?"
+                            --text="Ubuntu Detected. Is this correct?"
                     case $? in 
                         0)  
-                            echo Renew Package Database
+                            echo Renewing Package Database
                             apt-get update
-                            echo Install Ubuntu Dependencies       
+                            echo Installing Ubuntu Dependencies       
                             apt install git ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev build-essential --yes && STATUS="OK" 
 			    ;;
                         1) 
@@ -110,7 +110,7 @@ fi
                             ;;
                         -1)
                             zenity --info --width 500\
-                              --text="Oops. This should not happen."
+                              --text="Oops. This should not have happened..."
                             exit 0
                             ;;
                         esac
@@ -121,7 +121,7 @@ fi
 
     if [ "$STATUS" == "OK" ]; then
         # Clone and Install animated-wallpaper
-        echo 'Clone animated-wallpaper from github. (https://github.com/Ninlives/animated-wallpaper)'
+        echo 'Cloning animated-wallpaper from github. (https://github.com/Ninlives/animated-wallpaper)'
 
         git clone https://github.com/Ninlives/animated-wallpaper
         cd animated-wallpaper
@@ -137,7 +137,7 @@ fi
         chmod +x /usr/local/share/awp/awp-autostart.sh
     
     else
-        echo "Sry but the Installer does not work for your system!"
+        echo "Sorry but the Installer does not work on your system!"
 
     fi
 fi

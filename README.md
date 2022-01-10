@@ -18,7 +18,7 @@
 2. Move the ".desktop" file to /usr/share/applications/
 3. chmod +x /usr/local/share/awp/awp.sh
 4. chmod +x /usr/local/share/awp/awp_autostart.sh
-5. Reload GNOME - X11 press f2 and then r
+5. Reload GNOME - X11: press Alt + F2 then type r and press Enter
 
 # Notice:
 The X11 version of GNOME is recommended for this, as this will only work on a Wayland workspace.

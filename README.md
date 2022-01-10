@@ -21,7 +21,7 @@
 5. Reload GNOME - X11: press Alt + F2 then type r and press Enter
 
 # Notice:
-The X11 version of GNOME is recommended for this, as this will only work on a Wayland workspace.
+The X11 version of GNOME is recommended for this, as this will not work well on a Wayland workspace.
 
 ## Icon from:
 https://icon-icons.com/icon/wallpaper/104166

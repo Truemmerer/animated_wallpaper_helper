@@ -57,7 +57,7 @@ fi
                             echo Renewing Package Database
                             pacman -Sy
                             echo Installing Manjaro Dependencies  
-			                pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
+			                pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm --needed && STATUS="OK"
                             ;;
                         1) 
                             zenity --info --width 500\
@@ -79,7 +79,7 @@ fi
                             echo Renewing Package Database
                             pacman -Sy
                             echo Installing Arch Linux Dependencies       
-			                pacman -S git base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
+			                pacman -S git base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm --needed && STATUS="OK"
                             ;;
                         1) 
                             zenity --info --width 500\
@@ -125,7 +125,7 @@ fi
 
         git clone https://github.com/Ninlives/animated-wallpaper
         cd animated-wallpaper
-        cmake . && make && make install
+        cmake . && make && sudo make install
         cd ..
         rm -rf animated-wallpaper
 

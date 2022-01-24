@@ -1,7 +1,9 @@
 #!/bin/bash
 Download="$HOME/Animated_Wallpapers"
 Bilddir="$HOME/Animated_Wallpapers/Bild"
+Cachedir="$HOME/.cache/Animated_Wallpapers"
 
+mkdir -p $Cachedir
 mkdir -p $Bilddir
 cd $Download
 
@@ -56,8 +58,8 @@ esac
     esac
 
 cd ..
-echo $Bild > lastpicture.txt
-echo $Video > lastvideo.txt 
+echo $Bild > $Cachedir/lastpicture.txt
+echo $Video > $Cachedir/lastvideo.txt 
 killall animated-wallpaper
 
 gsettings set org.gnome.desktop.background picture-uri file://$Bild\
@@ -70,8 +72,8 @@ then
 
 killall animated-wallpaper
 
-read lastvid < $HOME/Animated_Wallpapers/lastvideo.txt
-read lastpic < $HOME/Animated_Wallpapers/lastpicture.txt
+read lastvid < $Cachedir/lastvideo.txt
+read lastpic < $Cachedir/lastpicture.txt
 
 gsettings set org.gnome.desktop.background picture-uri file://$lastpic\
 && animated-wallpaper $lastvid & exit 0

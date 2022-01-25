@@ -8,6 +8,10 @@ Animated Wallpaper Helper:
     Git:
     https://github.com/Truemmerer/animated_wallpaper_helper
 
+    Icon: 
+    from https://icon-icons.com/icon/wallpaper/104166 by Jeremiah
+    Icon-Lizenz: <https://creativecommons.org/licenses/by/4.0/>
+
     Info: This is a gui scripted in bash for animated wallpaper. Zenity is used as the interface.
     https://help.gnome.org/users/zenity
 

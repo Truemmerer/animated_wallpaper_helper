@@ -1,17 +1,16 @@
 #!/bin/bash
 
-#if [ $(whoami) != 'root' ]; then
-#  echo "Please run as root"
-
-#  else
+if [ $(whoami) == 'root' ]; then
+    echo "Please run as regular user!"
+    exit 1
+fi
 
 ORIGIN_USER=$(whoami)
 
 echo "Asking for sudo password"
 PASS=`zenity --password --title "Install Animated Wallpaper"`
 
-
-        # Detect OS
+# Detect OS
 if [ -f /etc/os-release ]; then
         # freedesktop.org and systemd
         . /etc/os-release
@@ -30,7 +29,6 @@ fi
 # Install Dependencies
                 if [ "$OS" == "Fedora Linux" ]; then
                         # Fedora
-
                         zenity --question --width 500\
                             --text="Fedora Detected. It needs to intigrate the rpmfusion repository for ffmpeg. Do you agree with this?"
 

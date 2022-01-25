@@ -1,6 +1,6 @@
 <img src="./awp/awp_wallpaper_icon.png" width="150" height="150">
 
-# Requires ()
+# Requires
 
 1. sudo (For automatic installation and uninstallation)
 

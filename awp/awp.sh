@@ -107,18 +107,12 @@ then
     lastBild= "$Cachedir/lastpicture.txt"
     lastVideo= "$Cachedir/lastvideo.txt"
 
-<<<<<<< HEAD
-gsettings set org.gnome.desktop.background picture-uri "file://$lastpic"\
-&& animated-wallpaper "$lastvid" & exit 0
-=======
     if [ -f "$lastBild" ]; then
         if [ -f "$lastVideo" ]; then
             read lastvid < "$Cachedir/lastvideo.txt"
             read lastpic < "$Cachedir/lastpicture.txt"
->>>>>>> effb1d16ecfb0866b4bac71ee3afb0e763906376
-
-            gsettings set org.gnome.desktop.background picture-uri file://$lastpic\
-            && animated-wallpaper $lastvid & exit 0
+	    gsettings set org.gnome.desktop.background picture-uri "file://$lastpic"\
+	    && animated-wallpaper "$lastvid" & exit 0
         else
             zenity --error \
             --text="No wallpaper has been used yet that can be called up."
@@ -149,25 +143,16 @@ then
     LINK=$(zenity --entry --title "Insert link" --text "Link to the video" --width=600)
     NAME=$(zenity --entry --title "What should the wallpaper be called?" --text "Without file suffix" --width=600)
 
-<<<<<<< HEAD
-youtube-dl --restrict-filenames "$LINK" -o "$NAME"\
- | zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
-ffmpeg -i "$NAME".* -frames:v 1 "./Bild/$NAME.png"
-=======
-    youtube-dl --restrict-filenames $LINK -o $NAME\
-    zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
-    ffmpeg -i $NAME.* -frames:v 1 "./Bild/$NAME.png"
->>>>>>> effb1d16ecfb0866b4bac71ee3afb0e763906376
 
-    killall animated-wallpaper
+   youtube-dl --restrict-filenames "$LINK" -o "$NAME"\
+   | zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
+   ffmpeg -i "$NAME".* -frames:v 1 "./Bild/$NAME.png"
 
-<<<<<<< HEAD
-gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$NAME.png"\
- && animated-wallpaper "$NAME".*  & exit 0
-=======
-    gsettings set org.gnome.desktop.background picture-uri file://$Bilddir/$NAME.png\
-     && animated-wallpaper $NAME.*  & exit 0
->>>>>>> effb1d16ecfb0866b4bac71ee3afb0e763906376
+   killall animated-wallpaper
+
+  gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$NAME.png"\
+  && animated-wallpaper "$NAME".*  & exit 0
+
 
 fi
 
@@ -186,13 +171,8 @@ fi
 if [ "$INPUT" == "Disable Autostart" ]
 then
 
-<<<<<<< HEAD
-rm -f "$HOME/.config/autostart/awp-autostart.desktop"
-sh "$Appdir/awp.sh"
-=======
-    rm -f "$HOME/.config/autostart/awp-autostart.desktop"
-    sh $Appdir/awp.sh
->>>>>>> effb1d16ecfb0866b4bac71ee3afb0e763906376
+  rm -f "$HOME/.config/autostart/awp-autostart.desktop"
+  sh "$Appdir/awp.sh"
 
 fi
 

@@ -10,10 +10,65 @@ ORIGIN_USER=$(whoami)
 echo "Asking for sudo password"
 PASS=`zenity --password --title "Install Animated Wallpaper"`
 
+# Checking if user has cancelled the password prompt
+case $? in 
+0) 
+    ;;
+1) 
+    zenity --info --width=500\
+        --text="Unfortunately, it is not possible for me to work like this."
+    exit 0
+    ;;
+-1)
+    echo "Exiting"
+    exit 1
+    ;;
+esac
+
+# Checking if provided password isn't empty
+if [ -z "$PASS" ]; then
+    zenity --question --width=500\
+        --text="Provided empty sudo password. Continue?"
+    
+    case $? in 
+    0) 
+        ;;
+    1) 
+        zenity --info --width 500\
+            --text="Unfortunately, it is not possible for me to work like this."
+        exit 0
+        ;;
+    -1)
+        zenity --info --width 500\
+            --text="Oops. This should not have happened...."
+        exit 1
+        ;;
+    esac
+fi
+
+# Checking if provided password is correct
+echo "$PASS" | sudo -S -k -v
+case $? in 
+0) 
+    echo "Verified sudo privileges."
+    ;;
+1)
+    zenity --info --width 500\
+        --text="Cannot run with sufficient privileges."
+    exit 0
+    ;;
+-1)
+    zenity --info --width 500\
+        --text="Oops. This should not have happened...."
+    exit 1
+    ;;
+esac
+
+
 # Detect OS
 if [ -f /etc/os-release ]; then
-        # freedesktop.org and systemd
-        . /etc/os-release
+    # freedesktop.org and systemd
+    . /etc/os-release
     OS=$NAME
 elif type lsb_release >/dev/null 2>&1; then
     OS=$(lsb_release -si)

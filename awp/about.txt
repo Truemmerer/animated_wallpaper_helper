@@ -1,7 +1,7 @@
 Animated Wallpaper Helper:
     Contributing:
     ● Johannes Dnaliew (Truemmerer)
-    ● Wasiak Florke Daniel (FirQue)
+    ● Wasiak Florke Daniel (FlrQue)
     ● Luciano Vieira Rodrigues (LVRodrigues)
     ● Daniel Monaghan (mowglixx)
 

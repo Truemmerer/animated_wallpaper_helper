@@ -5,7 +5,7 @@
 
 #  else
 
-echo "Frage Passwort für sudo ab"
+echo "Asking for sudo password"
 PASS=`zenity --password --title "Install Animated Wallpaper"`
 
 

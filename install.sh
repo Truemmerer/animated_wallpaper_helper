@@ -1,36 +1,91 @@
 #!/bin/bash
 
-if [ $(whoami) = 'root' ]; then
-  echo "Please run as user"
+if [ $(whoami) == 'root' ]; then
+    echo "Please run as regular user!"
+    exit 1
+fi
 
+ORIGIN_USER=$(whoami)
+
+echo "Asking for sudo password"
+PASS=`zenity --password --title "Install Animated Wallpaper"`
+
+# Checking if user has cancelled the password prompt
+case $? in 
+0) 
+    ;;
+1) 
+    zenity --info --width=500\
+        --text="Unfortunately, it is not possible for me to work like this."
+    exit 0
+    ;;
+-1)
+    echo "Exiting"
+    exit 1
+    ;;
+esac
+
+# Checking if provided password isn't empty
+if [ -z "$PASS" ]; then
+    zenity --question --width=500\
+        --text="Provided empty sudo password. Continue?"
+    
+    case $? in 
+    0) 
+        ;;
+    1) 
+        zenity --info --width 500\
+            --text="Unfortunately, it is not possible for me to work like this."
+        exit 0
+        ;;
+    -1)
+        zenity --info --width 500\
+            --text="Oops. This should not have happened...."
+        exit 1
+        ;;
+    esac
+fi
+
+# Checking if provided password is correct
+echo "$PASS" | sudo -S -k -v
+case $? in 
+0) 
+    echo "Verified sudo privileges."
+    ;;
+1)
+    zenity --info --width 500\
+        --text="Cannot run with sufficient privileges."
+    exit 0
+    ;;
+-1)
+    zenity --info --width 500\
+        --text="Oops. This should not have happened...."
+    exit 1
+    ;;
+esac
+
+
+# Detect OS
+if [ -f /etc/os-release ]; then
+    # freedesktop.org and systemd
+    . /etc/os-release
+    OS=$NAME
+elif type lsb_release >/dev/null 2>&1; then
+    OS=$(lsb_release -si)
+elif [ -f /etc/lsb-release ]; then
+    . /etc/lsb-release
+    OS=$DISTRIB_ID
 else
+    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
+    OS=$(uname -s)
+    VER=$(uname -r)
+fi
 
-    echo "Query password for sudo to install the necessary packages."
-    PASS=`zenity --password --title "Install Animated Wallpaper"`
-
-
-    # Detect OS
-    if [ -f /etc/os-release ]; then
-        # freedesktop.org and systemd
-        . /etc/os-release
-        OS=$NAME
-    elif type lsb_release >/dev/null 2>&1; then
-        OS=$(lsb_release -si)
-    elif [ -f /etc/lsb-release ]; then
-        . /etc/lsb-release
-        OS=$DISTRIB_ID
-    else
-        # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
-        OS=$(uname -s)
-        VER=$(uname -r)
-    fi
-
-    # Install Dependencies
-    if [ "$OS" == "Fedora Linux" ]; then
-        # Fedora
-
-        zenity --question --width 500\
-        --text="Fedora Detected. It needs to intigrate the rpmfusion repository for ffmpeg. Do you agree with this?"
+# Install Dependencies
+                if [ "$OS" == "Fedora Linux" ]; then
+                        # Fedora
+                        zenity --question --width 500\
+                            --text="Fedora Detected. It needs to intigrate the rpmfusion repository for ffmpeg. Do you agree with this?"
 
         case $? in 
         0) 
@@ -152,7 +207,7 @@ else
         case $? in 
         0) 
             echo Start Animated Wallpaper
-            sh "/usr/local/share/awp/awp.sh"
+            sudo -u $ORIGIN_USER sh "/usr/local/share/awp/awp.sh"
             ;;
         1) 
             exit 0

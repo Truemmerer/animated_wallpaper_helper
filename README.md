@@ -10,8 +10,8 @@
 ## Automatic installation
 **This will install the dependencies directly with and move the files to the correct places.**
 **Fedora, Arch Linux, Manjaro and Ubuntu supported**
-1. chmod +x awp_install_script.sh
-2. ./awp_install_script.sh
+1. chmod +x install.sh
+2. sh ./install.sh
 
 ## Manual Installation
 1. Move the folder "awp" to /usr/local/share/

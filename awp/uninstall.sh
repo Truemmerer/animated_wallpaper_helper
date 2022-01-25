@@ -1,6 +1,7 @@
 #!/bin/bash
 
 Cachedir="$HOME/.cache/Animated_Wallpapers"
+read PictureFolder < "$Cachedir/folder.txt"
 
 zenity --question --width 500\
     --text="Did you want to remove Animated Wallpaper?"
@@ -54,7 +55,7 @@ zenity --question --width 500\
     case $? in 
         0) 
             echo Delete animated wallpapers
-            rm -rf "$HOME/Animated_Wallpapers"
+            rm -rf "$PictureFolder"
             ;;
         1) 
             ;;

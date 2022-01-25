@@ -1,11 +1,15 @@
 <img src="./awp/awp_wallpaper_icon.png" width="150" height="150">
 
-# Requires (shipped by install.sh)
-1. ffmpeg
-2. youtube-dl
-3. animated-wallpaper
+# Requires ()
+
+1. sudo (For automatic installation and uninstallation)
+
+### shipped by install.sh:
+2. ffmpeg
+3. youtube-dl
+4. animated-wallpaper
 <https://github.com/Ninlives/animated-wallpaper>
-4. sudo (For automatic installation and uninstallation)
+
 
 # Installation
 ## Automatic installation

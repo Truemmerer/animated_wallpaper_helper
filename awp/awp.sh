@@ -2,14 +2,16 @@
 Download="$HOME/Animated_Wallpapers"
 Bilddir="$HOME/Animated_Wallpapers/Bild"
 Cachedir="$HOME/.cache/Animated_Wallpapers"
+Appdir="/usr/local/share/awp"
+FILEABOUT="$Appdir/about.txt"
 
-mkdir -p $Cachedir
-mkdir -p $Bilddir
+mkdir -p "$Cachedir"
+mkdir -p "$Bilddir"
 cd $Download
 
 INPUT=$(zenity --list --title "Animated Wallpaper Helper" --window-icon=/usr/local/share/awp/awp_wallpaper_icon.png --text "What do you want?"\
- --column "Selection" --column "Typ" --radiolist  FALSE "Existing" FALSE "New" TRUE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers" FALSE "Enable Autostart" FALSE "Disable Autostart"\
- --width=600 --height=250)
+ --column "Selection" --column "Typ" --radiolist  FALSE "Existing" FALSE "New" TRUE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers" FALSE "Enable Autostart" FALSE "Disable Autostart" FALSE "Uninstall" FALSE About\
+ --width=600 --height=295)
 
 
 #Existierendes Wallpaper
@@ -58,8 +60,8 @@ esac
     esac
 
 cd ..
-echo $Bild > $Cachedir/lastpicture.txt
-echo $Video > $Cachedir/lastvideo.txt 
+echo $Bild > "$Cachedir/lastpicture.txt"
+echo $Video > "$Cachedir/lastvideo.txt" 
 killall animated-wallpaper
 
 gsettings set org.gnome.desktop.background picture-uri file://$Bild\
@@ -72,8 +74,8 @@ then
 
 killall animated-wallpaper
 
-read lastvid < $Cachedir/lastvideo.txt
-read lastpic < $Cachedir/lastpicture.txt
+read lastvid < "$Cachedir/lastvideo.txt"
+read lastpic < "$Cachedir/lastpicture.txt"
 
 gsettings set org.gnome.desktop.background picture-uri file://$lastpic\
 && animated-wallpaper $lastvid & exit 0
@@ -95,7 +97,7 @@ NAME=$(zenity --entry --title "What should the wallpaper be called?" --text "Wit
 
 youtube-dl --restrict-filenames $LINK -o $NAME\
  | zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
-ffmpeg -i $NAME.* -frames:v 1 ./Bild/$NAME.png
+ffmpeg -i $NAME.* -frames:v 1 "./Bild/$NAME.png"
 
 killall animated-wallpaper
 
@@ -107,15 +109,31 @@ fi
 if [ "$INPUT" == "Enable Autostart" ]
 then
 
-cp /usr/local/share/awp/awp-autostart.desktop $HOME/.config/autostart/
-sh /usr/local/share/awp/awp.sh
+cp "/usr/local/share/awp/awp-autostart.desktop" "$HOME/.config/autostart/"
+sh "/usr/local/share/awp/awp.sh"
 
 fi
 
 if [ "$INPUT" == "Disable Autostart" ]
 then
 
-rm -f $HOME/.config/autostart/awp-autostart.desktop
-sh /usr/local/share/awp/awp.sh
+rm -f "$HOME/.config/autostart/awp-autostart.desktop"
+sh $Appdir/awp.sh
 
+fi
+
+if [ "$INPUT" == "Uninstall" ]
+then
+    sh "$Appdir/uninstall.sh"
+fi
+
+if [ "$INPUT" == "About" ]
+then
+  
+zenity --text-info \
+       --title="About" \
+       --filename=$FILEABOUT \
+       --width=600 --height=500 \
+
+        sh "$Appdir/awp.sh"
 fi

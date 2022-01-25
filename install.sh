@@ -135,6 +135,25 @@ fi
         cp awp.desktop /usr/share/applications/
         chmod +x /usr/local/share/awp/awp.sh
         chmod +x /usr/local/share/awp/awp-autostart.sh
+
+        zenity --question --width 500\
+            --text="Animated Wallpapers was installed successfully. Do you want to start the script now?"
+
+        case $? in 
+        0) 
+            echo Start Animated Wallpaper
+            sh "/usr/local/share/awp/awp.sh"
+            ;;
+        1) 
+            exit 0
+            echo Close
+            ;;
+        -1)
+            zenity --info --width 500\
+            --text="Oops. This should not have happened...."
+            exit 0
+            ;;
+        esac
     
     else
         echo "Sorry but the Installer does not work on your system!"

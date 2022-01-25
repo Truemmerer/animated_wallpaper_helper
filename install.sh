@@ -5,6 +5,8 @@
 
 #  else
 
+ORIGIN_USER=$(whoami)
+
 echo "Asking for sudo password"
 PASS=`zenity --password --title "Install Animated Wallpaper"`
 
@@ -146,7 +148,7 @@ fi
         case $? in 
         0) 
             echo Start Animated Wallpaper
-            sh "/usr/local/share/awp/awp.sh"
+            sudo -u $ORIGIN_USER sh "/usr/local/share/awp/awp.sh"
             ;;
         1) 
             exit 0

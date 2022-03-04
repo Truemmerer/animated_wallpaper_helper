@@ -104,13 +104,13 @@ then
 # Check if there was a previous wallpaper and if yes load this
 
     killall animated-wallpaper
-    lastBild= "$Cachedir/lastpicture.txt"
-    lastVideo= "$Cachedir/lastvideo.txt"
 
-    if [ -f "$lastBild" ]; then
-        if [ -f "$lastVideo" ]; then
-            read lastvid < "$Cachedir/lastvideo.txt"
-            read lastpic < "$Cachedir/lastpicture.txt"
+    read lastpic < "$Cachedir/lastpicture.txt"
+    read lastvid < "$Cachedir/lastvideo.txt"
+
+
+    if [ -f "$lastpic" ]; then
+        if [ -f "$lastvid" ]; then
 	    gsettings set org.gnome.desktop.background picture-uri "file://$lastpic"\
 	    && animated-wallpaper "$lastvid" & exit 0
         else

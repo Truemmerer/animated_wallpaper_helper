@@ -1,9 +1,12 @@
 [Desktop Entry]
 Name=Animated Wallpaper
 Name[de]=Animierte Hintergrundbilder
+Name[pl]=Animowana tapeta
 Comment[de]=Verwaltung von animierten Hintergrundbildern
+Comment[pl]=Zarządzanie animowaną tapetą
 Comment=Control of animated Wallpaper
 Keywords[de]=Hintergrund;Animation;Wallpaper;
+Keywords[pl]=Animacja;Tapeta;Tło;Wygaszacz;
 Keywords=Animation;Wallpaper;GTK;Background;
 OnlyShowIn=GNOME;Unity;
 Exec=/usr/local/share/awp/awp.sh

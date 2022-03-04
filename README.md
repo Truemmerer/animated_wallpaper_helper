@@ -1,17 +1,23 @@
 <img src="./awp/awp_wallpaper_icon.png" width="150" height="150">
 
-# Requires (shipped by awp_install_script.sh)
-1. ffmpeg
-2. youtube-dl
-3. animated-wallpaper
+# Requires
+
+1. sudo (For automatic installation and uninstallation)
+
+### shipped by install.sh:
+2. ffmpeg
+3. youtube-dl
+4. animated-wallpaper
 <https://github.com/Ninlives/animated-wallpaper>
+
 
 # Installation
 ## Automatic installation
 **This will install the dependencies directly with and move the files to the correct places.**
 **Fedora, Arch Linux, Manjaro and Ubuntu supported**
-1. chmod +x awp_install_script.sh
-2. ./awp_install_script.sh
+
+1. chmod +x install.sh
+2. sh ./install.sh
 
 ## Manual Installation
 1. Move the folder "awp" to /usr/local/share/

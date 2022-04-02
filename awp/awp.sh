@@ -93,6 +93,7 @@ echo $Video > "$Cachedir/lastvideo.txt"
 killall animated-wallpaper
 
 gsettings set org.gnome.desktop.background picture-uri "file://$Bild"\
+&& gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bild"\
 && animated-wallpaper "$Video" & exit 0
 
 fi
@@ -112,6 +113,7 @@ then
     if [ -f "$lastpic" ]; then
         if [ -f "$lastvid" ]; then
 	    gsettings set org.gnome.desktop.background picture-uri "file://$lastpic"\
+            && gsettings set org.gnome.desktop.background picture-uri-dark "file://$lastpic"\
 	    && animated-wallpaper "$lastvid" & exit 0
         else
             zenity --error \
@@ -151,6 +153,7 @@ then
    killall animated-wallpaper
 
   gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$NAME.png"\
+  && gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bilddir/$NAME.png"\
   && animated-wallpaper "$NAME".*  & exit 0
 
 

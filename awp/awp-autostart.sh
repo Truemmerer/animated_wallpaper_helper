@@ -10,4 +10,5 @@ read lastvid < "$Cachedir/lastvideo.txt"
 read lastpic < "$Cachedir/lastpicture.txt"
 
 gsettings set org.gnome.desktop.background picture-uri "file://$lastpic"
+gsettings set org.gnome.desktop.background picture-uri-dark "file://$lastpic"
 animated-wallpaper "$lastvid" & exit 0

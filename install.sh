@@ -207,7 +207,7 @@ fi
         case $? in 
         0) 
             echo Start Animated Wallpaper
-            sudo -u $ORIGIN_USER sh "/usr/local/share/awp/awp.sh"
+            sudo -u $ORIGIN_USER sh "/usr/local/share/awp/awp.sh" & exit 0
             ;;
         1) 
             exit 0

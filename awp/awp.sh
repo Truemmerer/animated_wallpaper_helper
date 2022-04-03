@@ -1,5 +1,14 @@
 #!/bin/bash
 
+
+if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+    zenity --info \
+    --text="You use Wayland as a window manager. X11 is recommended for use."\
+    --width=600\
+    -- height=100
+fi
+
+
 # Find "Videos" folder of a user
 Userdirs="$HOME/.config/user-dirs.dirs" 
 if [ -f "$Userdirs" ]; then
@@ -13,6 +22,7 @@ Bilddir="$Download/Bild"
 Cachedir="$HOME/.cache/Animated_Wallpapers"
 Appdir="/usr/local/share/awp"
 FILEABOUT="$Appdir/about.txt"
+VIDEO_LIST="$Cachedir/videos.txt"
 
 # Save the Picture Folder
 echo $Download > "$Cachedir/folder.txt" 
@@ -38,8 +48,8 @@ cd $Download
 ###############
 
 INPUT=$(zenity --list --title "Animated Wallpaper Helper" --window-icon=/usr/local/share/awp/awp_wallpaper_icon.png --text "What do you want?"\
- --column "Selection" --column "Typ" --radiolist  FALSE "Existing" FALSE "New" TRUE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers" FALSE "Enable Autostart" FALSE "Disable Autostart" FALSE "Uninstall" FALSE About\
- --width=600 --height=295)
+ --column "Selection" --column "Typ" --radiolist  FALSE "Existing" FALSE "New" TRUE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers" FALSE "Remove Wallpaper" FALSE "Enable Autostart" FALSE "Disable Autostart" FALSE "Uninstall" FALSE About\
+ --width=600 --height=350)
 
 
 # Existing Wallpaper
@@ -47,54 +57,38 @@ INPUT=$(zenity --list --title "Animated Wallpaper Helper" --window-icon=/usr/loc
 if [ "$INPUT" == "Existing" ]
 then
 
-Video=$(zenity --file-selection --title "Choose the live wallpaper" --filename='$Download' --width=600 --file-filter=""*.mkv" "*.webm"")
+    read -a wallpaper_list_read < "$VIDEO_LIST"
 
-case $? in 
+    for (( i=0; i<${#wallpaper_list_read[*]}; ++i)); do
+        data+=( "${wallpaper_list_read[$i]}")
+    done
 
-0) 
-    echo "select Video"
-    ;;
-1) 
-    echo "Aborted"
-    exit 0
-    ;;
--1) 
-    zenity --info --width 500\
-        --text="Oops. This should not happen."
-    exit 0
-    ;;
-    
-esac
+    wallpaper=$(zenity --list \
+        --title="Select the name of the background set" \
+        --height=350\
+        --column="choose:"\
+            "${data[@]}")
 
-    cd "$Bilddir"
-    Bild=$(zenity --file-selection --title "Select the corresponding still image" --filename='$Bilddir' --width=600 --file-filter=""*.png" "*.jpg" "*.jpeg"") 
+        case $? in 
+            0) 
+     
+                echo $wallpaper > "$Cachedir/lastvideo.txt" 
+                killall animated-wallpaper
+                gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$wallpaper.png"\
+                && gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bilddir/$wallpaper.png"\
+                && cd $Download\
+                && animated-wallpaper "$wallpaper".* & exit 0
 
-    case $? in 
-
-    0)
-        echo "select Picture"
-        ;;
-
-    1) 
-        echo "Aborted"
-        exit 0
-        ;;
-    -1) 
-        zenity --info --width 500\
-            --text="Oops. This should not happen."
-        exit 0
-        ;;    
-
-    esac
-
-cd ..
-echo $Bild > "$Cachedir/lastpicture.txt"
-echo $Video > "$Cachedir/lastvideo.txt" 
-killall animated-wallpaper
-
-gsettings set org.gnome.desktop.background picture-uri "file://$Bild"\
-&& gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bild"\
-&& animated-wallpaper "$Video" & exit 0
+                ;;
+            1)
+                exit 0
+                ;;
+            -1)
+                zenity --info --width 500\
+                    --text="Oops. This should not have happened...."
+                exit 1
+                ;;
+        esac
 
 fi
 
@@ -106,21 +100,16 @@ then
 
     killall animated-wallpaper
 
-    read lastpic < "$Cachedir/lastpicture.txt"
-    read lastvid < "$Cachedir/lastvideo.txt"
+    
+    read wallpaper < "$Cachedir/lastvideo.txt"
 
 
-    if [ -f "$lastpic" ]; then
-        if [ -f "$lastvid" ]; then
-	    gsettings set org.gnome.desktop.background picture-uri "file://$lastpic"\
-            && gsettings set org.gnome.desktop.background picture-uri-dark "file://$lastpic"\
-	    && animated-wallpaper "$lastvid" & exit 0
-        else
-            zenity --error \
-            --text="No wallpaper has been used yet that can be called up."
+    if [ -f "$Cachedir/lastvideo.txt" ]; then
+	    gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$wallpaper.png"\
+        && gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bilddir/$wallpaper.png"\
+        && cd $Download && pwd\
+	    && animated-wallpaper "$wallpaper".* & exit 0
 
-            sh "/usr/local/share/awp/awp.sh"
-        fi 
     else
 
         zenity --error \
@@ -145,17 +134,89 @@ then
     LINK=$(zenity --entry --title "Insert link" --text "Link to the video" --width=600)
     NAME=$(zenity --entry --title "What should the wallpaper be called?" --text "Without file suffix" --width=600)
 
-
-   youtube-dl --restrict-filenames "$LINK" -o "$NAME"\
+   echo "Download $Link"
+   youtube-dl --restrict-filenames "$LINK" -o "$NAME"-convert\
    | zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
-   ffmpeg -i "$NAME".* -frames:v 1 "./Bild/$NAME.png"
+   
+   echo "Convert $Download/$NAME-convert to $Download/$NAME.mkv"
+   ffmpeg -i -an "$Download/$NAME"-convert "$Download/$NAME.mkv"\
+   | zenity --progress --title "Progress" --text "Convert to mkv" --pulsate --width=200 --auto-close
+
+   echo "remove $Download/$NAME"
+   rm "$Download/$NAME-convert"
+   
+   echo "Generate Picture"
+   ffmpeg -i "$NAME.mkv" -frames:v 1 "./Bild/$NAME.png"
 
    killall animated-wallpaper
 
-  gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$NAME.png"\
-  && gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bilddir/$NAME.png"\
-  && animated-wallpaper "$NAME".*  & exit 0
+    if [ -f "$VIDEO_LIST" ]; then
+        echo "$VIDEO_LIST exists."
+        read actual_list < "$VIDEO_LIST"
+        echo $actual_list' '$NAME > "$VIDEO_LIST"
 
+    else
+
+        echo "create $VIDEO_LIST"
+        echo $NAME > "$VIDEO_LIST"
+
+    fi
+
+
+    gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$NAME.png"\
+    && gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bilddir/$NAME.png"\
+    && animated-wallpaper "$NAME".* & exit 0
+
+
+fi
+
+# Remove Wallpaper
+if [ "$INPUT" == "Remove Wallpaper" ]
+then
+
+    read -a wallpaper_list_read < "$VIDEO_LIST"
+
+    for (( i=0; i<${#wallpaper_list_read[*]}; ++i)); do
+        data+=( "${wallpaper_list_read[$i]}")
+    done
+
+    wallpaper_to_remove=$(zenity --list \
+        --title="Select the name of the background set" \
+        --height=350\
+        --column="choose:"\
+            "${data[@]}")
+
+        case $? in 
+            0) 
+     
+                echo "remove entry $wallpaper_to_remove in $VIDEO_LIST"
+                
+                for (( i=0; i<${#wallpaper_list_read[*]}; ++i)); do
+                    
+                    if [ "${wallpaper_list_read[$i]}" == "$wallpaper_to_remove" ]; then
+
+                        echo "data hit $wallpaper_to_remove"
+
+                    else 
+
+                        newtxt="$newtxt ${wallpaper_list_read[$i]}"
+                    fi
+
+                done
+                
+                echo $newtxt > "$VIDEO_LIST"
+                rm "$Bilddir/$wallpaper_to_remove.png"
+                rm "$Download/$wallpaper_to_remove".*
+                
+                ;;
+            1)
+                ;;
+            -1)
+                zenity --info --width 500\
+                    --text="Oops. This should not have happened...."
+                exit 1
+                ;;
+        esac
 
 fi
 

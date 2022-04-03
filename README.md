@@ -27,7 +27,9 @@
 5. Reload GNOME - X11 press f2 and then r
 
 # Notice:
-The X11 version of GNOME is recommended for this, as this will only work on a Wayland workspace.
+1. The X11 version of GNOME is recommended for this, as this will only work on a Wayland workspace.
+2. For latest stable use https://github.com/Truemmerer/animated_wallpaper_helper/releases
+
 
 ## Icon from:
 https://icon-icons.com/icon/wallpaper/104166

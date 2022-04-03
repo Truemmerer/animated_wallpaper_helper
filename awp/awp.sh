@@ -139,7 +139,7 @@ then
    | zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
    
    echo "Convert $Download/$NAME-convert to $Download/$NAME.mkv"
-   ffmpeg -i -an "$Download/$NAME"-convert "$Download/$NAME.mkv"\
+   ffmpeg -i "$Download/$NAME"-conver* -an "$Download/$NAME.mkv"\
    | zenity --progress --title "Progress" --text "Convert to mkv" --pulsate --width=200 --auto-close
 
    echo "remove $Download/$NAME"

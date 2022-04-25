@@ -17,7 +17,7 @@
 **Fedora, Arch Linux, Manjaro and Ubuntu supported**
 
 1. chmod +x install.sh
-2. sh ./install.sh
+2. bash ./install.sh
 
 ## Manual Installation
 1. Move the folder "awp" to /usr/local/share/

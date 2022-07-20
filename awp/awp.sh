@@ -246,6 +246,7 @@ fi
 if [ "$INPUT" == "Enable Autostart" ]
 then
 
+    mkdir -p "$HOME/.config/autostart/"
     cp "$Appdir/awp-autostart.desktop" "$HOME/.config/autostart/" 
     sh "$Appdir/awp.sh"
         

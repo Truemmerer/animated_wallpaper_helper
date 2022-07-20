@@ -6,7 +6,7 @@
 
 ### shipped by install.sh:
 2. ffmpeg
-3. youtube-dl
+3. youtube-dl or yt-dlp
 4. animated-wallpaper
 <https://github.com/Ninlives/animated-wallpaper>
 

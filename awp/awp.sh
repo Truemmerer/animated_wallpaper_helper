@@ -17,12 +17,14 @@ else
     XDG_VIDEOS_DIR="$HOME/Videos"   
 fi 
 
+
 Download="$XDG_VIDEOS_DIR/Animated_Wallpapers"
 Bilddir="$Download/Bild"
 Cachedir="$HOME/.cache/Animated_Wallpapers"
 Appdir="/usr/local/share/awp"
 FILEABOUT="$Appdir/about.txt"
 VIDEO_LIST="$Cachedir/videos.txt"
+VDownloaderSave="$Cachedir/vdownloader.txt"
 
 # Save the Picture Folder
 echo $Download > "$Cachedir/folder.txt" 
@@ -39,6 +41,10 @@ if [ -d "$Olddir" ]; then
     zenity --info \
     --text="The animated backgrounds have been moved to your Video folder: $Download"
 fi
+
+read -a vdownloader < "$VDownloaderSave"
+echo "Video Downloader $vdownloader"
+
 
 # Go to the working folder
 cd $Download
@@ -135,7 +141,7 @@ then
     NAME=$(zenity --entry --title "What should the wallpaper be called?" --text "Without file suffix" --width=600)
 
    echo "Download $Link"
-   youtube-dl --restrict-filenames "$LINK" -o "$NAME"-convert\
+   $vdownloader --restrict-filenames "$LINK" -o "$NAME"-convert\
    | zenity --progress --title "Progress" --text "The download is running" --pulsate --width=200 --auto-close
    
    echo "Convert $Download/$NAME-convert to $Download/$NAME.mkv"

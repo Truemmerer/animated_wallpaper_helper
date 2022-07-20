@@ -81,6 +81,14 @@ else
     VER=$(uname -r)
 fi
 
+vDownloader=$(zenity --list --title "Animated Wallpaper Helper" --text "Which video downloader do you want to use?"\
+ --column "Selection" --column "Typ" --radiolist  --column "Info"\
+   TRUE yt-dlp "A fork of youtube-dl with more features and better performance" \
+   FALSE youtube-dl "The Classic Downloader" \
+ --width=800 --height=350)
+
+
+
 # Install Dependencies
                 if [ "$OS" == "Fedora Linux" ]; then
                         # Fedora
@@ -93,7 +101,7 @@ fi
             echo Add rpmfusion repository for ffmpeg
             echo "$PASS" | sudo -S dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm 
             echo Installing dev tools and dependencies
-            echo "$PASS" | sudo -S dnf install -y cmake gcc-c++ vala pkgconfig gtk3-devel clutter-devel clutter-gtk-devel clutter-gst3-devel youtube-dl ffmpeg && STATUS="OK"
+            echo "$PASS" | sudo -S dnf install -y cmake gcc-c++ vala pkgconfig gtk3-devel clutter-devel clutter-gtk-devel clutter-gst3-devel $vDownloader ffmpeg && STATUS="OK"
             ;;
         1) 
             zenity --info --width 500\
@@ -117,7 +125,7 @@ fi
             echo Renewing Package Database
             echo "$PASS" | sudo -S pacman -Sy
             echo Installing Manjaro Dependencies  
-			echo "$PASS" | sudo -S pacman -S base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
+			echo "$PASS" | sudo -S pacman -S base-devel ffmpeg $vDownloader cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
             ;;
         1) 
             zenity --info --width 500\
@@ -140,7 +148,7 @@ fi
             echo Renewing Package Database
             echo "$PASS" | sudo -S pacman -Sy
             echo Installing Arch Linux Dependencies       
-			echo "$PASS" | sudo -S pacman -S git base-devel ffmpeg youtube-dl cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
+			echo "$PASS" | sudo -S pacman -S git base-devel ffmpeg $vDownloader cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
             ;;
         1) 
             zenity --info --width 500\
@@ -163,7 +171,7 @@ fi
             echo Renewing Package Database
             echo "$PASS" | sudo -S apt-get update
             echo Installing Ubuntu Dependencies       
-            echo "$PASS" | sudo -S apt install git ffmpeg youtube-dl valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev build-essential --yes && STATUS="OK" 
+            echo "$PASS" | sudo -S apt install git ffmpeg $vDownloader valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev build-essential --yes && STATUS="OK" 
 			;;
         1) 
             zenity --info --width 500\
@@ -198,6 +206,16 @@ fi
         echo "$PASS" | sudo -S cp awp.desktop /usr/share/applications/
         echo "$PASS" | sudo -S chmod +x /usr/local/share/awp/awp.sh
         echo "$PASS" | sudo -S chmod +x /usr/local/share/awp/awp-autostart.sh
+
+
+        # Create Cachedir
+        Cachedir="$HOME/.cache/Animated_Wallpapers"
+        mkdir -p "$Cachedir"
+
+        # Save Downloader
+        VDownloaderSave="$Cachedir/vdownloader.txt"
+        echo $vDownloader > $VDownloaderSave
+
 
         echo "Animated Wallpapers was installed successfully."
         

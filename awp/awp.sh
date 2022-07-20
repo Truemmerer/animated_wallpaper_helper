@@ -42,8 +42,23 @@ if [ -d "$Olddir" ]; then
     --text="The animated backgrounds have been moved to your Video folder: $Download"
 fi
 
-read -a vdownloader < "$VDownloaderSave"
-echo "Video Downloader $vdownloader"
+if [ ! -f "$VDownloaderSave" ]; then
+    echo "No Downloader selectet!"
+    vdownloader=$(zenity --list --title "Animated Wallpaper Helper" --text "Which video downloader do you want to use?"\
+    --column "Selection" --column "Typ" --radiolist  --column "Info"\
+        TRUE yt-dlp "A fork of youtube-dl with more features and better performance" \
+        FALSE youtube-dl "The Classic Downloader" \
+    --width=800 --height=350)
+
+    echo vdownloader > "$VDownloaderSave"
+
+else
+
+    read -a vdownloader < "$VDownloaderSave"
+    echo "Video Downloader $vdownloader"
+
+fi
+
 
 
 # Go to the working folder

@@ -15,6 +15,7 @@
 ## Automatic installation
 **This will install the dependencies directly with and move the files to the correct places.**
 **Fedora, Arch Linux, Manjaro and Ubuntu supported**
+**Also, children distros are supported.**
 
 1. chmod +x install.sh
 2. bash ./install.sh

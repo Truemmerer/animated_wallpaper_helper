@@ -69,7 +69,7 @@ cd $Download
 ###############
 
 INPUT=$(zenity --list --title "Animated Wallpaper Helper" --window-icon=/usr/local/share/awp/awp_wallpaper_icon.png --text "What do you want?"\
- --column "Selection" --column "Typ" --radiolist  FALSE "Existing" FALSE "New" TRUE "Start Animated Wallpapers" FALSE "Stop Animated Wallpapers" FALSE "Remove Wallpaper" FALSE "Enable Autostart" FALSE "Disable Autostart" FALSE "Uninstall" FALSE About\
+ --column "Selection" --column "Typ" --radiolist  FALSE "Existing" FALSE "New" TRUE "Start/Stop Animated Wallpapers" FALSE "Remove Wallpaper" FALSE "Enable/Disable Autostart" FALSE "Uninstall" FALSE About\
  --width=600 --height=350)
 
 
@@ -114,37 +114,43 @@ then
 fi
 
 # Start Animated Wallpaper with the last image
-if [ "$INPUT" == "Start Animated Wallpapers" ]
+if [ "$INPUT" == "Start/Stop Animated Wallpapers" ]
 then
 
-# Check if there was a previous wallpaper and if yes load this
 
-    killall animated-wallpaper
-
+    if [ 'pidof animated-wallpaper' > 0 ]; then
     
-    read wallpaper < "$Cachedir/lastvideo.txt"
+        # Stop Animated Wallpaper
+        killall animated-wallpaper && exit 0
 
-
-    if [ -f "$Cachedir/lastvideo.txt" ]; then
-	    gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$wallpaper.png"\
-        && gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bilddir/$wallpaper.png"\
-        && cd $Download && pwd\
-	    && animated-wallpaper "$wallpaper".* & exit 0
 
     else
 
-        zenity --error \
-        --text="No wallpaper has been used yet that can be called up."
+    # Start Animated Wallpaper
+        killall animated-wallpaper
 
-        sh "/usr/local/share/awp/awp.sh"
-    fi
-fi
+        read wallpaper < "$Cachedir/lastvideo.txt"
 
-# Stop Animated Wallpaper
-if [ "$INPUT" == "Stop Animated Wallpapers" ]
-then
 
-    killall animated-wallpaper && exit 0
+        if [ -f "$Cachedir/lastvideo.txt" ]; then
+            
+            echo "1" > "$StartStopStatus"
+
+            gsettings set org.gnome.desktop.background picture-uri "file://$Bilddir/$wallpaper.png"\
+            && gsettings set org.gnome.desktop.background picture-uri-dark "file://$Bilddir/$wallpaper.png"\
+            && cd $Download && pwd\
+            && animated-wallpaper "$wallpaper".* & exit 0
+
+        else
+
+            zenity --error \
+            --text="No wallpaper has been used yet that can be called up."
+
+            sh "/usr/local/share/awp/awp.sh"
+        fi
+
+    fi 
+
 
 fi
 
@@ -241,26 +247,35 @@ then
 
 fi
 
-# Enable Autostart
+# Enable/Disable Autostart
 
-if [ "$INPUT" == "Enable Autostart" ]
+if [ "$INPUT" == "Enable/Disable Autostart" ]
 then
 
-    mkdir -p "$HOME/.config/autostart/"
-    cp "$Appdir/awp-autostart.desktop" "$HOME/.config/autostart/" 
-    sh "$Appdir/awp.sh"
+    if [ -f "$HOME/.config/autostart/awp-autostart.desktop" ]; then
+
+        rm -f "$HOME/.config/autostart/awp-autostart.desktop"
+        zenity --info \
+            --text="Autostart disable"\
+            --width=600\
+            -- height=100
+
+        sh "$Appdir/awp.sh"
+    
+    else
+        mkdir -p "$HOME/.config/autostart/"
+        cp "$Appdir/awp-autostart.desktop" "$HOME/.config/autostart/" 
         
+        zenity --info \
+            --text="Autostart enabled"\
+            --width=600\
+            -- height=100
+
+        sh "$Appdir/awp.sh"
+
+    fi         
 fi
 
-# Disable Autostart
-
-if [ "$INPUT" == "Disable Autostart" ]
-then
-
-  rm -f "$HOME/.config/autostart/awp-autostart.desktop"
-  sh "$Appdir/awp.sh"
-
-fi
 
 # Uninstall
 

@@ -1,11 +1,19 @@
 #!/bin/bash
 
+# List of Supported Distros
+os_array=('Fedora Linux' 'Manjaro Linux' 'Arch Linux' 'Ubuntu' 'Pop!_OS')
+
+# If user == root, then stop the script
+
 if [ $(whoami) == 'root' ]; then
     echo "Please run as regular user!"
     exit 1
 fi
 
+# Check the Name of a User
 ORIGIN_USER=$(whoami)
+
+# Ask for sudo password
 
 echo "Asking for sudo password"
 PASS=`zenity --password --title "Install Animated Wallpaper"`
@@ -81,6 +89,17 @@ else
     VER=$(uname -r)
 fi
 
+# Check if OS is Supported in os_array
+
+    os_check="0"
+
+    for i in "${os_array[@]}"; do
+        if [ "$OS" == "$i" ]; then
+            os_check="1"
+            echo "$os_check"
+        fi
+    done
+
 vDownloader=$(zenity --list --title "Animated Wallpaper Helper" --text "Which video downloader do you want to use?"\
  --column "Selection" --column "Typ" --radiolist  --column "Info"\
    TRUE yt-dlp "A fork of youtube-dl with more features and better performance" \
@@ -88,12 +107,58 @@ vDownloader=$(zenity --list --title "Animated Wallpaper Helper" --text "Which vi
  --width=800 --height=350)
 
 
+    if [ "$os_check" == "0" ]; then
+
+        zenity --question \
+            --text="Your Linux system is not supported by the automatic script. The following is a list of supported distributions. If your distro is based on one, you can try to use the installer from it. \n\n Would you like to try?" \
+            --width=600\
+            -- height=100
+
+            case $? in 
+            0) 
+                ;;
+            1) 
+                echo "Aborted"
+                exit 0
+                ;;
+            -1)
+                zenity --info --width 500\
+                    --text="Oops. This should not have happened...."
+                exit 1
+                ;;
+            esac
+
+            OS=$(zenity --list \
+                --title="Select the name of the background set" \
+                --column="choose:"\
+                --height=400\
+                "${os_array[@]}")
+
+                case $? in 
+                0) 
+                    os_check="1"
+                    ;;
+                1)
+                    echo "Aborted"
+                    exit 0
+                    ;;
+                -1)
+                    zenity --info --width 500\
+                        --text="Oops. This should not have happened...."
+                    exit 1
+                    ;;
+                esac
+
+    fi
+
 
 # Install Dependencies
-                if [ "$OS" == "Fedora Linux" ]; then
-                        # Fedora
-                        zenity --question --width 500\
-                            --text="Fedora Detected. It needs to intigrate the rpmfusion repository for ffmpeg. Do you agree with this?"
+
+    if [ "$os_check" == "1" ]; then
+        if [ "$OS" == "Fedora Linux" ]; then
+            # Fedora
+            zenity --question --width 500\
+            --text="Fedora Detected. It needs to intigrate the rpmfusion repository for ffmpeg. Do you agree with this?"
 
         case $? in 
         0) 
@@ -115,80 +180,104 @@ vDownloader=$(zenity --list --title "Animated Wallpaper Helper" --text "Which vi
             ;;
         esac
                 
-    elif [[ "$OS" == "Manjaro Linux" ]]; then
-		# Manjaro
-        zenity --question --width 500\
-        --text="Manjaro Detected. Is this correct?"
+        elif [[ "$OS" == "Manjaro Linux" ]]; then
+            # Manjaro
+            zenity --question --width 500\
+            --text="Manjaro Detected. Is this correct?"
+            
+            case $? in 
+            0)  
+                echo Renewing Package Database
+                echo "$PASS" | sudo -S pacman -Sy
+                echo Installing Manjaro Dependencies  
+                echo "$PASS" | sudo -S pacman -S base-devel ffmpeg $vDownloader cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
+                ;;
+            1) 
+                zenity --info --width 500\
+                --text="Unfortunately, it is not possible for me to work like this."
+                exit 0
+                ;;
+            -1)
+                zenity --info --width 500\
+                --text="Oops. This should not have happened...."
+                exit 0
+                ;;
+            esac
+        elif [[ "$OS" == "Arch Linux" ]]; then
+            # Arch
+            zenity --question --width 500\
+            --text="Arch Linux Detected. Is this correct?"
         
-        case $? in 
-        0)  
-            echo Renewing Package Database
-            echo "$PASS" | sudo -S pacman -Sy
-            echo Installing Manjaro Dependencies  
-			echo "$PASS" | sudo -S pacman -S base-devel ffmpeg $vDownloader cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
-            ;;
-        1) 
-            zenity --info --width 500\
-            --text="Unfortunately, it is not possible for me to work like this."
-            exit 0
-            ;;
-        -1)
-            zenity --info --width 500\
-            --text="Oops. This should not have happened...."
-            exit 0
-            ;;
-        esac
-    elif [[ "$OS" == "Arch Linux" ]]; then
-	    # Arch
-        zenity --question --width 500\
-        --text="Arch Linux Detected. Is this correct?"
-    
-        case $? in 
-        0)  
-            echo Renewing Package Database
-            echo "$PASS" | sudo -S pacman -Sy
-            echo Installing Arch Linux Dependencies       
-			echo "$PASS" | sudo -S pacman -S git base-devel ffmpeg $vDownloader cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
-            ;;
-        1) 
-            zenity --info --width 500\
-            --text="Unfortunately, it is not possible for me to work like this."
-            exit 0
-            ;;
-        -1)
-            zenity --info --width 500\
-            --text="Oops. This should not have happened..."
-            exit 0
-            ;;
-        esac
-    elif [[ "$OS" == "Ubuntu" ]]; then
-	    # Ubuntu
-        zenity --question --width 500\
-        --text="Ubuntu Detected. Is this correct?"
-        
-        case $? in 
-        0)  
-            echo Renewing Package Database
-            echo "$PASS" | sudo -S apt-get update
-            echo Installing Ubuntu Dependencies       
-            echo "$PASS" | sudo -S apt install git ffmpeg $vDownloader valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev build-essential --yes && STATUS="OK" 
-			;;
-        1) 
-            zenity --info --width 500\
-            --text="Unfortunately, it is not possible for me to work like this."
-            exit 0
-            ;;
-        -1)
-            zenity --info --width 500\
-            --text="Oops. This should not have happened..."
-            exit 0
-            ;;
-        esac
-        
-    else
-	    echo "This OS is not Supported!"        
-    fi
+            case $? in 
+            0)  
+                echo Renewing Package Database
+                echo "$PASS" | sudo -S pacman -Sy
+                echo Installing Arch Linux Dependencies       
+                echo "$PASS" | sudo -S pacman -S git base-devel ffmpeg $vDownloader cmake vala pkgconfig gtk3 clutter clutter-gtk clutter-gst gst-libav --noconfirm && STATUS="OK"
+                ;;
+            1) 
+                zenity --info --width 500\
+                --text="Unfortunately, it is not possible for me to work like this."
+                exit 0
+                ;;
+            -1)
+                zenity --info --width 500\
+                --text="Oops. This should not have happened..."
+                exit 0
+                ;;
+            esac
+        elif [[ "$OS" == "Ubuntu" ]]; then
+            # Ubuntu
+            zenity --question --width 500\
+            --text="Ubuntu Detected. Is this correct?"
+            
+            case $? in 
+            0)  
+                echo Renewing Package Database
+                echo "$PASS" | sudo -S apt-get update
+                echo Installing Ubuntu Dependencies       
+                echo "$PASS" | sudo -S apt install git ffmpeg $vDownloader valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev build-essential --yes && STATUS="OK" 
+                ;;
+            1) 
+                zenity --info --width 500\
+                --text="Unfortunately, it is not possible for me to work like this."
+                exit 0
+                ;;
+            -1)
+                zenity --info --width 500\
+                --text="Oops. This should not have happened..."
+                exit 0
+                ;;
+            esac
 
+        elif [[ "$OS" == "Pop!_OS" ]]; then
+            # Ubuntu
+            zenity --question --width 500\
+            --text="Pop!_OS Detected. Is this correct?"
+            
+            case $? in 
+            0)  
+                echo Renewing Package Database
+                echo "$PASS" | sudo -S apt-get update
+                echo Installing Pop!_OS Dependencies       
+                echo "$PASS" | sudo -S apt install git ffmpeg $vDownloader valac cmake pkg-config libgtk-3-dev libclutter-gtk-1.0-dev libclutter-gst-3.0-dev build-essential --yes && STATUS="OK" 
+                ;;
+            1) 
+                zenity --info --width 500\
+                --text="Unfortunately, it is not possible for me to work like this."
+                exit 0
+                ;;
+            -1)
+                zenity --info --width 500\
+                --text="Oops. This should not have happened..."
+                exit 0
+                ;;
+            esac
+        else
+            echo "This OS is not Supported!"        
+        fi
+
+    fi
 
     if [ "$STATUS" == "OK" ]; then
         # Clone and Install animated-wallpaper
@@ -240,10 +329,9 @@ vDownloader=$(zenity --list --title "Animated Wallpaper Helper" --text "Which vi
     
     else
         echo "Sorry but the Installer does not work on your system!"
-        echo "Fedora, Arch Linux, Manjaro and Ubuntu supported"
 
         zenity --error \
-        --text="Sorry but the Installer does not work on your system! Fedora, Arch Linux, Manjaro and Ubuntu supported"
+        --text="Sorry but the Installer does not work on your system!"
 
 
     fi

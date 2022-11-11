@@ -332,6 +332,3 @@ else
     zenity --error \
     --text="Sorry but the Installer does not work on your system!"
 fi
-fi
-
-

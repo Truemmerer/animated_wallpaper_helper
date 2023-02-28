@@ -1,5 +1,11 @@
 <img src="./awp/awp_wallpaper_icon.png" width="150" height="150">
 
+# Info:
+This project will not be developed further
+
+I recommend using the following new project that also works with Wayland:
+https://github.com/jeffshee/gnome-ext-hanabi
+
 # Requires
 
 1. sudo (For automatic installation and uninstallation)
